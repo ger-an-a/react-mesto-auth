@@ -6,4 +6,4 @@
 
 Добавлены валидация форм и аутентификация пользователя
 
-# [Посмотреть здесь.](https://ger-an-a.github.io/mesto-react/)
+# [Посмотреть здесь.](http://ger-an-a.github.io/react-mesto-auth/)
