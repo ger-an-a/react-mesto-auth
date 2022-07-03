@@ -48,8 +48,7 @@ function Register(props) {
                 console.log(res);
                 if (res.data) {
                     props.openInfoPopup(true);
-                    props.setText('Вы успешно зарегистрировались!');
-                    props.setImg(union_ok);
+                    props.setInfoPopup({ img: union_ok, text: 'Вы успешно зарегистрировались!' });
                     history.push('/sign-in');
                     return res
                 }
@@ -58,8 +57,7 @@ function Register(props) {
                 }
             }, () => {
                 props.openInfoPopup(true);
-                props.setText('Что-то пошло не так! Попробуйте ещё раз.');
-                props.setImg(union_error);
+                props.setInfoPopup({ img: union_error, text: 'Что-то пошло не так! Попробуйте ещё раз.' });
                 formValidator.disabledButtonState();
                 setBtnText('Зарегистрироваться');
             })
@@ -72,7 +70,7 @@ function Register(props) {
                     <input required value={email} onChange={handleChangeEmail} className={inputClass} id="email-input" type="email" minLength="2" maxLength="40" name="email"
                         placeholder="Email" />
                     <span className={errorElementEmailClass}>{errMessageEmail}</span>
-                    <input value={password} onChange={handleChangePassword} className={inputClass} id="password-input" type="text" minLength="8" maxLength="200" name="password"
+                    <input value={password} onChange={handleChangePassword} className={inputClass} id="password-input" type="password" minLength="8" maxLength="200" name="password"
                         placeholder="Пароль" required />
                     <span className={errorElementPasswordClass}>{errMessagePassword}</span>
                 </>}

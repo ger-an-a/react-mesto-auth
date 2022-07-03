@@ -62,10 +62,9 @@ function Login(props) {
                     return;
                 }
             })
-            .catch((err) => {
+            .catch(() => {
                 props.openInfoPopup(true);
-                props.setText('Что-то пошло не так! Попробуйте ещё раз.');
-                props.setImg(union_error);
+                props.setInfoPopup({ img: union_error, text: 'Что-то пошло не так! Попробуйте ещё раз.' });
                 props.setLoggedIn(false);
                 formValidator.disabledButtonState();
                 setBtnText('Войти');
@@ -75,18 +74,16 @@ function Login(props) {
 
 
     return (
-        <>
-            <Form titleClass="form__title form__title_type_auth" title="Вход" onSubmit={handleSubmit} name="register" btn={btnText} btnClass={btnClass} btnStatus={btnStatus} children={
-                <>
-                    <input value={email} onChange={handleChangeEmail} className={inputClass} id="email-input" type="email" minLength="2" maxLength="40" name="email"
-                        placeholder="Email" required />
-                    <span className={errorElementEmailClass}>{errMessageEmail}</span>
-                    <input value={password} onChange={handleChangePassword} className={inputClass} id="password-input" type="text" minLength="8" maxLength="200" name="password"
-                        placeholder="Пароль" required />
-                    <span className={errorElementPasswordClass}>{errMessagePassword}</span>
-                </>}
-            />
-        </>
+        <Form titleClass="form__title form__title_type_auth" title="Вход" onSubmit={handleSubmit} name="register" btn={btnText} btnClass={btnClass} btnStatus={btnStatus} children={
+            <>
+                <input value={email} onChange={handleChangeEmail} className={inputClass} id="email-input" type="email" minLength="2" maxLength="40" name="email"
+                    placeholder="Email" required />
+                <span className={errorElementEmailClass}>{errMessageEmail}</span>
+                <input value={password} onChange={handleChangePassword} className={inputClass} id="password-input" type="password" minLength="8" maxLength="200" name="password"
+                    placeholder="Пароль" required />
+                <span className={errorElementPasswordClass}>{errMessagePassword}</span>
+            </>}
+        />
     );
 }
 

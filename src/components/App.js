@@ -23,8 +23,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard;
   const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
-  const [imgInfoPopup, setImgInfoPopup] = React.useState(union_error);
-  const [textInfoPopup, setTextInfoPopup] = React.useState('');
+  const [infoPopup, setInfoPopup] = React.useState({ img: union_error, text: '' });
   const history = useHistory();
   const [userEmail, setUserEmail] = React.useState('');
 
@@ -151,23 +150,29 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-    Promise.all([api.getInitialCards(), api.getInitialInfo()])
-      .then(([cardsData, userData]) => {
-        setCurrentUser(userData);
-        setCardList(cardsData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }, []);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      Promise.all([api.getInitialCards(), api.getInitialInfo()])
+        .then(([cardsData, userData]) => {
+          setCurrentUser(userData);
+          setCardList(cardsData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="background">
         <div className="page">
           <BrowserRouter>
+            <InfoTooltip img={infoPopup.img} text={infoPopup.text} isOpen={isInfoPopupOpen} onClose={closeAllPopups} />
             <ProtectedRoute
-              path="/"
+              exact path="/"
               loggedIn={loggedIn}
               card={selectedCard} onClose={closeAllPopups}
               setLoggedIn={setLoggedIn} email={userEmail}
@@ -180,13 +185,11 @@ function App() {
             />
             <Route path="/sign-up">
               <Header />
-              <Register setImg={setImgInfoPopup} setText={setTextInfoPopup} openInfoPopup={setIsInfoPopupOpen} />
-              <InfoTooltip img={imgInfoPopup} text={textInfoPopup} isOpen={isInfoPopupOpen} onClose={closeAllPopups} />
+              <Register setInfoPopup={setInfoPopup} openInfoPopup={setIsInfoPopupOpen} />
             </Route>
             <Route path="/sign-in">
               <Header />
-              <Login setUserEmail={setUserEmail} setLoggedIn={setLoggedIn} setImg={setImgInfoPopup} setText={setTextInfoPopup} openInfoPopup={setIsInfoPopupOpen} />
-              <InfoTooltip img={imgInfoPopup} text={textInfoPopup} isOpen={isInfoPopupOpen} onClose={closeAllPopups} />
+              <Login setUserEmail={setUserEmail} setLoggedIn={setLoggedIn} setInfoPopup={setInfoPopup} openInfoPopup={setIsInfoPopupOpen} />
             </Route>
             <Route>
               {loggedIn ? (
